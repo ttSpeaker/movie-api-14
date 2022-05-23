@@ -1,22 +1,24 @@
-const prisma = require("./utils/client");
+const express = require("express");
+const bodyParser = require("body-parser");
 
-async function main() {
-  // ... you will write your Prisma Client queries here
+const moviesRouter = require("./routes/movies");
+const reviewsRouter = require("./routes/reviews");
+const genresRouter = require("./routes/genres");
 
-  const movies = await prisma.movie.findMany({
-    include: {
-      genres: true,
-      reviews: true,
-    },
-  });
+const app = express();
+app.use(bodyParser.json());
 
-  return;
-}
+app.use("/api/movies", moviesRouter);
+app.use("/api/reviews", reviewsRouter);
+app.use("/api/genres", genresRouter);
 
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+app.use((req, res, next) => {
+  res.statusCode = 404;
+  res.send();
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server ready at: http://localhost:${PORT} ⭐️`);
+});
