@@ -9,7 +9,7 @@ async function main() {
       reviews: true,
     },
   });
-  console.log(movies);
+
   return;
 }
 
