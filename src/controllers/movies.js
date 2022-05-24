@@ -10,11 +10,11 @@ const createMovie = async (req, res, next) => {
     return;
   }
 
-  // if (await movieAlreadyExists(title)) {
-  //   res.statusCode = 400;
-  //   res.send("Movie with this title already exists");
-  //   return;
-  // }
+  if (await movieAlreadyExists(title)) {
+    res.statusCode = 400;
+    res.send("Movie with this title already exists");
+    return;
+  }
 
   try {
     newMovie = await movie.create(title, genres);
@@ -58,10 +58,10 @@ const titleIsValid = (title) => {
   return title !== "";
 };
 
-// const movieAlreadyExists = async (title) => {
-//   const moviesByName = await movie.findByTitle(title);
-//   return moviesByName.length > 0;
-// };
+const movieAlreadyExists = async (title) => {
+  const moviesByName = await movie.findByTitle(title);
+  return moviesByName.length > 0;
+};
 
 module.exports = {
   createMovie,
